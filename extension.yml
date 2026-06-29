@@ -4,7 +4,7 @@ schema_version: "1.0"
 extension:
   id: "design-frontend"
   name: "Specify Design Frontend"
-  version: "1.2.0"
+  version: "1.0.0"
   description: "Apply processed design artifacts to existing frontend repositories"
   author: "reytech-dev"
   repository: "https://github.com/reytech-dev/spec-kit-design-frontend"
