@@ -1,0 +1,27 @@
+
+schema_version: "1.0"
+
+extension:
+  id: "design-frontend"
+  name: "Specify Design Frontend"
+  version: "1.2.0"
+  description: "Apply processed design artifacts to existing frontend repositories"
+  author: "reytech-dev"
+  repository: "https://github.com/reytech-dev/spec-kit-design-frontend"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.8.0"
+  commands:
+    - "speckit.specify"
+    - "speckit.open-design.process"
+
+provides:
+  commands:
+    - name: "speckit.design-frontend.update"
+      file: "commands/speckit.design-frontend.update.md"
+      description: "Update an existing frontend repository from processed design artifacts"
+      aliases: []
+
+tags:
+  - "utility"

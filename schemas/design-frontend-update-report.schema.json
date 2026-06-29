@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/reytech-dev/spec-kit-design-frontend/schemas/design-frontend-update-report.schema.json",
+  "title": "Design Frontend Update Report",
+  "description": "Schema for the design-frontend-update-report.md output produced by /speckit.design-frontend.update after applying changes",
+  "type": "object",
+  "required": ["project", "frontendRepo", "designContext", "screensByClassification", "updatedFiles", "routeMapEntriesUpdated", "verification", "nextCommand"],
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Project slug"
+    },
+    "frontendRepo": {
+      "type": "string",
+      "description": "Path to the frontend repository"
+    },
+    "designContext": {
+      "type": "string",
+      "description": "Path to the design context"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of report generation"
+    },
+    "screensByClassification": {
+      "type": "object",
+      "required": ["unchanged", "changed", "new", "removedFromDesign", "unknown"],
+      "properties": {
+        "unchanged": { "type": "integer", "minimum": 0 },
+        "changed": { "type": "integer", "minimum": 0 },
+        "new": { "type": "integer", "minimum": 0 },
+        "removedFromDesign": { "type": "integer", "minimum": 0 },
+        "unknown": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "updatedFiles": {
+      "type": "array",
+      "description": "List of files that were modified",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": { "type": "string" },
+          "action": {
+            "type": "string",
+            "enum": ["created", "modified", "copied"]
+          }
+        }
+      }
+    },
+    "routeMapEntriesUpdated": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of route-map.json entries with updated implementationRoute values"
+    },
+    "routeMapDetails": {
+      "type": "array",
+      "description": "Details of route-map updates",
+      "items": {
+        "type": "object",
+        "required": ["screenId", "implementationRoute"],
+        "properties": {
+          "screenId": { "type": "string" },
+          "implementationRoute": { "type": "string" }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["codegen", "lint", "test", "build"],
+      "properties": {
+        "codegen": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["passed", "skipped", "failed"] },
+            "notes": { "type": "string" }
+          }
+        },
+        "lint": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["passed", "skipped", "failed"] },
+            "notes": { "type": "string" }
+          }
+        },
+        "test": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["passed", "skipped", "failed"] },
+            "notes": { "type": "string" }
+          }
+        },
+        "build": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["passed", "skipped", "failed"] },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "nextCommand": {
+      "type": "string",
+      "description": "The next command the user should run, e.g. for visual comparison"
+    },
+    "removedFromDesignScreens": {
+      "type": "array",
+      "description": "Screens that exist in the frontend but not in the design contract",
+      "items": {
+        "type": "object",
+        "required": ["screenId", "screenName"],
+        "properties": {
+          "screenId": { "type": "string" },
+          "screenName": { "type": "string" },
+          "implementationRoute": { "type": "string" }
+        }
+      }
+    }
+  }
+}

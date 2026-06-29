@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/reytech-dev/spec-kit-design-frontend/schemas/design-frontend-update-plan.schema.json",
+  "title": "Design Frontend Update Plan",
+  "description": "Schema for the design-frontend-update-plan.md output produced by /speckit.design-frontend.update --dry-run",
+  "type": "object",
+  "required": ["project", "frontendRepo", "designContext", "classification", "expectedModifiedFiles", "routeMapUpdates", "risks"],
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Project slug matching workspace/design-context/<project>"
+    },
+    "frontendRepo": {
+      "type": "string",
+      "description": "Path to the frontend repository, e.g. workspace/frontend/<frontend-repo>"
+    },
+    "designContext": {
+      "type": "string",
+      "description": "Path to the design context, e.g. workspace/design-context/<project>"
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "Whether this plan was produced in dry-run mode (no files modified)"
+    },
+    "classification": {
+      "type": "object",
+      "required": ["unchanged", "changed", "new", "removedFromDesign", "unknown"],
+      "properties": {
+        "unchanged": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of screens unchanged from design contract"
+        },
+        "changed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of screens with design contract changes"
+        },
+        "new": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of screens in design contract but not in frontend"
+        },
+        "removedFromDesign": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of screens in frontend but not in design contract"
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of screens that could not be confidently classified"
+        }
+      }
+    },
+    "screens": {
+      "type": "array",
+      "description": "Per-screen classification details",
+      "items": {
+        "type": "object",
+        "required": ["screenId", "screenName", "classification"],
+        "properties": {
+          "screenId": {
+            "type": "string",
+            "description": "Stable screen identifier from design-ir.json"
+          },
+          "screenName": {
+            "type": "string",
+            "description": "Human-readable screen name"
+          },
+          "classification": {
+            "type": "string",
+            "enum": ["unchanged", "changed", "new", "removedFromDesign", "unknown"]
+          },
+          "implementationRoute": {
+            "type": "string",
+            "description": "Expected URL path for the screen"
+          },
+          "viewportVariants": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Viewport sizes this screen targets"
+          },
+          "plannedActions": {
+            "type": "string",
+            "description": "Description of planned modifications"
+          },
+          "referenceScreenshots": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Paths to reference screenshot files"
+          }
+        }
+      }
+    },
+    "expectedModifiedFiles": {
+      "type": "array",
+      "description": "Files expected to be modified",
+      "items": {
+        "type": "object",
+        "required": ["path", "reason"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "File path relative to workspace"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why this file will be modified"
+          }
+        }
+      }
+    },
+    "routeMapUpdates": {
+      "type": "array",
+      "description": "Expected route-map.json implementationRoute updates",
+      "items": {
+        "type": "object",
+        "required": ["screenId", "implementationRoute"],
+        "properties": {
+          "screenId": {
+            "type": "string"
+          },
+          "implementationRoute": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "description": "Risks and assumptions identified during planning",
+      "items": {
+        "type": "object",
+        "required": ["description", "severity"],
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"]
+          },
+          "mitigation": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
